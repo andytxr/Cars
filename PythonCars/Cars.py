@@ -10,7 +10,7 @@ def getData(archive):
     reader = csv.DictReader(archive, delimiter=',')
     return reader
 
-archiveCsv=loadArchive(r'C:\Users\andre\Desktop\PythonCars\CarRentalData.csv')
+archiveCsv=loadArchive(r'C:\Users\yourUser\yourFolder\PythonCars\CarRentalData.csv')
 data=getData(archiveCsv)
 
 rentedTesla=0
