@@ -1,118 +1,122 @@
 import csv
-
 from tkinter import *
-
-def loadArchive(archive):
-    return open(archive, newline='')
-
-def getData(archive):
-    reader = csv.DictReader(archive, delimiter=',')
-    return reader
-
-
-archiveCsv = loadArchive(r'C:\Users\andre\PycharmProjects\PythonCars\CarRentalData.csv')
-data = getData(archiveCsv)
-
-rentedTesla = 0
-rentedToyota = 0
-rentedFord = 0
-rentedMercedes = 0
-rentedChevrolet = 0
-rentedJeep = 0
-rentedPorsche = 0
-rentedVolkswagen = 0
-
-for car in data:
-    car = dict(car)
-    if (car["vehicle.make"] == "Tesla"):
-        rentedTesla = rentedTesla + 1
-    elif (car["vehicle.make"] == "Toyota"):
-        rentedToyota = rentedToyota + 1
-    elif (car["vehicle.make"] == "Ford"):
-        rentedFord = rentedFord + 1
-    elif (car["vehicle.make"] == "Mercedes-Benz"):
-        rentedMercedes = rentedMercedes + 1
-    elif (car["vehicle.make"] == "Chevrolet"):
-        rentedChevrolet = rentedChevrolet + 1
-    elif (car["vehicle.make"] == "Jeep"):
-        rentedJeep = rentedJeep + 1
-    elif (car["vehicle.make"] == "Porsche"):
-        rentedPorsche = rentedPorsche + 1
-    elif (car["vehicle.make"] == "Volkswagen"):
-        rentedVolkswagen = rentedVolkswagen + 1
-
 
 class Application:
 
-    def __init__(self, master="none") -> None:
-        self.defaultFont = ("Arial", 10)
+    def __init__(self, master=None):
+
+        self.defaultFont = ("Arial", "10")
 
         self.firstContainer = Frame(master)
-        self.firstContainer["pady"] = 20
+        self.firstContainer["pady"] = 10
         self.firstContainer.pack()
 
-        self.secondContainer = Frame(master)
-        self.secondContainer["pady"] = 20
-        self.secondContainer.pack()
+        self.title = Label(self.firstContainer, text="Car Rental Data Identifier")
+        self.title["font"] = ("Arial", 10, "bold")
+        self.title.pack()
 
+        self.secondContainer = Frame(master)
+        self.secondContainer["pady"] = 10
+        self.secondContainer.pack()
         self.thirdContainer = Frame(master)
-        self.thirdContainer["pady"] = 20
+        self.thirdContainer["pady"] = 10
         self.thirdContainer.pack()
+
+        self.desc = Label(self.secondContainer, text="Enter the brand to return the number of vehicles rented by it.")
+        self.desc["font"] = ("Arial", 8, "italic")
+        self.desc.pack()
+        self.brands = Label(self.thirdContainer, text="Brands available: Chevrolet, Ford, Jeep, Mercedes, Porsche, Tesla, Toyota and Volkswagen")
+        self.brands["font"] = ("Calibri", 8)
+        self.brands.pack()
+
+        self.brandContainer = Frame(master)
+        self.brandContainer["padx"] = 20
+        self.brandContainer.pack()
+
+        self.brandLabel = Label(self.brandContainer, text="Brand name", font=self.defaultFont)
+        self.brandLabel.pack(side=LEFT)
+
+        self.brandName = Entry(self.brandContainer)
+        self.brandName["width"] = 30
+        self.brandName["font"] = self.defaultFont
+        self.brandName.pack(side=LEFT)
 
         self.fourthContainer = Frame(master)
         self.fourthContainer["pady"] = 20
         self.fourthContainer.pack()
 
-        self.fifthContainer = Frame(master)
-        self.fifthContainer["pady"] = 20
-        self.fifthContainer.pack()
+        self.firstWidget = Frame(master)
+        self.firstWidget.pack()
 
-        self.sixthContainer = Frame(master)
-        self.sixthContainer["pady"] = 20
-        self.sixthContainer.pack()
+        self.verify = Button(self.firstWidget, font=self.defaultFont, text="Done", bg="purple", command=self.brandShow)
+        self.verify.pack()
 
-        self.seventhContainer = Frame(master)
-        self.seventhContainer["pady"] = 20
-        self.seventhContainer.pack()
+        self.msg = Label(self.fourthContainer, text=" ", font=self.defaultFont)
+        self.msg.pack()
 
-        self.eighthContainer = Frame(master)
-        self.eighthContainer["pady"] = 20
-        self.eighthContainer.pack()
+    def brandShow(self):
 
-        self.messagea = Label(self.firstContainer, text="", font=self.defaultFont)
-        self.messagea.pack()
+        def loadArchive(archive):
+            return open(archive, newline="")
 
-        self.messageb = Label(self.secondContainer, text="", font=self.defaultFont)
-        self.messageb.pack()
+        def getData(archive):
+            reader = csv.DictReader(archive, delimiter=",")
+            return reader
 
-        self.messagec = Label(self.thirdContainer, text="", font=self.defaultFont)
-        self.messagec.pack()
+        archiveCsv = loadArchive(r'C:\Users\andre\Desktop\PythonCars\CarRentalData.csv')
+        data = getData(archiveCsv)
 
-        self.messaged = Label(self.fourthContainer, text="", font=self.defaultFont)
-        self.messaged.pack()
+        rentedChevrolet = 0
+        rentedFord = 0
+        rentedMercedes = 0
+        rentedPorsche = 0
+        rentedTesla = 0
+        rentedToyota = 0
+        rentedVolkswagen = 0
+        rentedJeep = 0
 
-        self.messagee = Label(self.fifthContainer, text="", font=self.defaultFont)
-        self.messagee.pack()
+        for car in data:
+            brand = self.brandName.get()
+            car = dict(car)
+            if (car["vehicle.make"] == "Tesla"):
+                rentedTesla = rentedTesla + 1
+            elif (car["vehicle.make"] == "Toyota"):
+                rentedToyota = rentedToyota + 1
+            elif (car["vehicle.make"] == "Ford"):
+                rentedFord = rentedFord + 1
+            elif (car["vehicle.make"] == "Mercedes-Benz"):
+                rentedMercedes = rentedMercedes + 1
+            elif (car["vehicle.make"] == "Chevrolet"):
+                rentedChevrolet = rentedChevrolet + 1
+            elif (car["vehicle.make"] == "Jeep"):
+                rentedJeep = rentedJeep + 1
+            elif (car["vehicle.make"] == "Porsche"):
+                rentedPorsche = rentedPorsche + 1
+            elif (car["vehicle.make"] == "Volkswagen"):
+                rentedVolkswagen = rentedVolkswagen + 1
 
-        self.messagef = Label(self.sixthContainer, text="", font=self.defaultFont)
-        self.messagef.pack()
+            if (brand == "Chevrolet"):
+                self.msg["text"] = "Rented cars by Chevrolet: " + str(rentedChevrolet)
+            elif (brand == "Ford"):
+                self.msg["text"] = "Rented cars by Ford: " + str(rentedFord)
+            elif (brand == "Jeep"):
+                self.msg["text"] = "Rented cars by Jeep: " + str(rentedJeep)
+            elif (brand == "Mercedes"):
+                self.msg["text"] = f"Rented cars by Mercedes: " + str(rentedMercedes)
+            elif (brand == "Porsche"):
+                self.msg["text"] = "Rented cars by Porsche: " + str(rentedPorsche)
+            elif (brand == "Tesla"):
+                self.msg["text"] = "Rented cars by Tesla: " + str(rentedTesla)
+            elif (brand == "Toyota"):
+                self.msg["text"] = "Rented cars by Toyota: " + str(rentedToyota)
+            elif (brand == "Volkswagen"):
+                self.msg["text"] = "Rented cars by Mercedes: " + str(rentedMercedes)
 
-        self.messageg = Label(self.seventhContainer, text="", font=self.defaultFont)
-        self.messageg.pack()
-
-        self.messageh = Label(self.eighthContainer, text="", font=self.defaultFont)
-        self.messageh.pack()
-
-        self.messagea["text"] = "Rented cars by Tesla: " + str(rentedTesla)
-        self.messageb["text"] = "Rented cars by Toyota: " + str(rentedToyota)
-        self.messagec["text"] = "Rented cars by Ford: " + str(rentedFord)
-        self.messaged["text"] = "Rented cars by Mercedes: " + str(rentedMercedes)
-        self.messagee["text"] = "Rented cars by Chevrolet: " + str(rentedChevrolet)
-        self.messagef["text"] = "Rented cars by Jeep: " + str(rentedJeep)
-        self.messageg["text"] = "Rented cars by Porsche: " + str(rentedPorsche)
-        self.messageh["text"] = "Rented cars by Volkswagen: " + str(rentedVolkswagen)
-
+        print(rentedMercedes)
 root = Tk()
 Application(root)
 root.mainloop()
+
+
+
 
