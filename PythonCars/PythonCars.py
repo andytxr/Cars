@@ -63,7 +63,7 @@ class Application:
             reader = csv.DictReader(archive, delimiter=",")
             return reader
 
-        archiveCsv = loadArchive(r'C:\Users\andre\Desktop\PythonCars\CarRentalData.csv')
+        archiveCsv = loadArchive(r'C:\Users\yourFolder\yourFolder\PythonCars\CarRentalData.csv')
         data = getData(archiveCsv)
 
         rentedChevrolet = 0
