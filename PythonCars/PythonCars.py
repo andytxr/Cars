@@ -76,7 +76,7 @@ class Application:
         rentedJeep = 0
 
         for car in data:
-            brand = self.brandName.get()
+            brand = self.brandName.get().lower()
             car = dict(car)
             if (car["vehicle.make"] == "Tesla"):
                 rentedTesla = rentedTesla + 1
@@ -95,27 +95,28 @@ class Application:
             elif (car["vehicle.make"] == "Volkswagen"):
                 rentedVolkswagen = rentedVolkswagen + 1
 
-            if (brand == "Chevrolet"):
+            if (brand == "chevrolet"):
                 self.msg["text"] = "Rented cars by Chevrolet: " + str(rentedChevrolet)
-            elif (brand == "Ford"):
+            elif (brand == "ford"):
                 self.msg["text"] = "Rented cars by Ford: " + str(rentedFord)
-            elif (brand == "Jeep"):
+            elif (brand == "jeep"):
                 self.msg["text"] = "Rented cars by Jeep: " + str(rentedJeep)
-            elif (brand == "Mercedes"):
+            elif (brand == "mercedes"):
                 self.msg["text"] = f"Rented cars by Mercedes: " + str(rentedMercedes)
-            elif (brand == "Porsche"):
+            elif (brand == "porsche"):
                 self.msg["text"] = "Rented cars by Porsche: " + str(rentedPorsche)
-            elif (brand == "Tesla"):
+            elif (brand == "tesla"):
                 self.msg["text"] = "Rented cars by Tesla: " + str(rentedTesla)
-            elif (brand == "Toyota"):
+            elif (brand == "toyota"):
                 self.msg["text"] = "Rented cars by Toyota: " + str(rentedToyota)
-            elif (brand == "Volkswagen"):
+            elif (brand == "volkswagen"):
                 self.msg["text"] = "Rented cars by Mercedes: " + str(rentedMercedes)
-
-        print(rentedMercedes)
+            else:
+                self.msg["text"] = "The mark is misspelled or does not exist in the database."
 root = Tk()
 Application(root)
 root.mainloop()
+
 
 
 
