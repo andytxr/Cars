@@ -110,9 +110,9 @@ class Application:
             elif (brand == "toyota"):
                 self.msg["text"] = "Rented cars by Toyota: " + str(rentedToyota)
             elif (brand == "volkswagen"):
-                self.msg["text"] = "Rented cars by Mercedes: " + str(rentedMercedes)
+                self.msg["text"] = "Rented cars by Volkswagen: " + str(rentedVolkswagen)
             else:
-                self.msg["text"] = "The mark is misspelled or does not exist in the database."
+                self.msg["text"] = "The brand is misspelled or does not exist in the database."
 root = Tk()
 Application(root)
 root.mainloop()
