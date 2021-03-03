@@ -1,4 +1,5 @@
 import csv
+import threading
 from tkinter import *
 
 class Application:
@@ -49,21 +50,24 @@ class Application:
         self.firstWidget.pack()
 
         self.verify = Button(self.firstWidget, font=self.defaultFont, text="Done", bg="purple", command=self.brandShow)
-        self.verify.pack()
+        self.verify.pack(side=LEFT)
 
         self.msg = Label(self.fourthContainer, text=" ", font=self.defaultFont)
         self.msg.pack()
 
+        self.quit = Button(self.firstWidget, font=self.defaultFont, text="Quit", bg="red", command=root.quit)
+        self.quit.pack(side=RIGHT)
+
     def brandShow(self):
 
         def loadArchive(archive):
-            return open(archive, newline="")
+            return  open(archive, newline="")
 
         def getData(archive):
             reader = csv.DictReader(archive, delimiter=",")
             return reader
 
-        archiveCsv = loadArchive(r'C:\Users\yourFolder\yourFolder\PythonCars\CarRentalData.csv')
+        archiveCsv = loadArchive(r'CarRentalData.csv')
         data = getData(archiveCsv)
 
         rentedChevrolet = 0
@@ -113,9 +117,13 @@ class Application:
                 self.msg["text"] = "Rented cars by Volkswagen: " + str(rentedVolkswagen)
             else:
                 self.msg["text"] = "The brand is misspelled or does not exist in the database."
-root = Tk()
+root=Tk()
 Application(root)
 root.mainloop()
+
+
+
+
 
 
 
