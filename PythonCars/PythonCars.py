@@ -1,7 +1,10 @@
 import csv
-import threading
+import webbrowser
+import asyncio
 from tkinter import *
 
+loop = asyncio.get_event_loop()
+new = 2
 class Application:
 
     def __init__(self, master=None):
@@ -26,15 +29,15 @@ class Application:
         self.desc = Label(self.secondContainer, text="Enter the brand to return the number of vehicles rented by it.")
         self.desc["font"] = ("Arial", 8, "italic")
         self.desc.pack()
-        self.brands = Label(self.thirdContainer, text="Brands available: Chevrolet, Ford, Jeep, Mercedes, Porsche, Tesla, Toyota and Volkswagen")
-        self.brands["font"] = ("Calibri", 8)
-        self.brands.pack()
+
+        self.brandsButton = Button(self.thirdContainer, text="Brands available", font=self.defaultFont, bg="purple", command=self.brandsAvailable)
+        self.brandsButton.pack()
 
         self.brandContainer = Frame(master)
         self.brandContainer["padx"] = 20
         self.brandContainer.pack()
 
-        self.brandLabel = Label(self.brandContainer, text="Brand name", font=self.defaultFont)
+        self.brandLabel = Label(self.brandContainer, text="Brand name:", font=self.defaultFont)
         self.brandLabel.pack(side=LEFT)
 
         self.brandName = Entry(self.brandContainer)
@@ -49,7 +52,7 @@ class Application:
         self.firstWidget = Frame(master)
         self.firstWidget.pack()
 
-        self.verify = Button(self.firstWidget, font=self.defaultFont, text="Done", bg="purple", command=self.brandShow)
+        self.verify = Button(self.firstWidget, font=self.defaultFont, text="Done", bg="green", command=self.brandShow)
         self.verify.pack(side=LEFT)
 
         self.msg = Label(self.fourthContainer, text=" ", font=self.defaultFont)
@@ -58,74 +61,38 @@ class Application:
         self.quit = Button(self.firstWidget, font=self.defaultFont, text="Quit", bg="red", command=root.quit)
         self.quit.pack(side=RIGHT)
 
+    def brandsAvailable(self):
+        url=r"BrandsAvailable.html"
+        webbrowser.open(url, new=new)
+
     def brandShow(self):
 
-        def loadArchive(archive):
+        async def loadArchive(archive):
             return  open(archive, newline="")
 
-        def getData(archive):
+        archiveCsv = loop.run_until_complete(loadArchive(r'CarRentalData.csv'))
+
+        async def getData(archive):
             reader = csv.DictReader(archive, delimiter=",")
             return reader
 
-        archiveCsv = loadArchive(r'CarRentalData.csv')
-        data = getData(archiveCsv)
+        data = loop.run_until_complete(getData(archiveCsv))
 
-        rentedChevrolet = 0
-        rentedFord = 0
-        rentedMercedes = 0
-        rentedPorsche = 0
-        rentedTesla = 0
-        rentedToyota = 0
-        rentedVolkswagen = 0
-        rentedJeep = 0
+        rented_cars = {}
 
         for car in data:
-            brand = self.brandName.get().lower()
+            brand = self.brandName.get()
             car = dict(car)
-            if (car["vehicle.make"] == "Tesla"):
-                rentedTesla = rentedTesla + 1
-            elif (car["vehicle.make"] == "Toyota"):
-                rentedToyota = rentedToyota + 1
-            elif (car["vehicle.make"] == "Ford"):
-                rentedFord = rentedFord + 1
-            elif (car["vehicle.make"] == "Mercedes-Benz"):
-                rentedMercedes = rentedMercedes + 1
-            elif (car["vehicle.make"] == "Chevrolet"):
-                rentedChevrolet = rentedChevrolet + 1
-            elif (car["vehicle.make"] == "Jeep"):
-                rentedJeep = rentedJeep + 1
-            elif (car["vehicle.make"] == "Porsche"):
-                rentedPorsche = rentedPorsche + 1
-            elif (car["vehicle.make"] == "Volkswagen"):
-                rentedVolkswagen = rentedVolkswagen + 1
 
-            if (brand == "chevrolet"):
-                self.msg["text"] = "Rented cars by Chevrolet: " + str(rentedChevrolet)
-            elif (brand == "ford"):
-                self.msg["text"] = "Rented cars by Ford: " + str(rentedFord)
-            elif (brand == "jeep"):
-                self.msg["text"] = "Rented cars by Jeep: " + str(rentedJeep)
-            elif (brand == "mercedes"):
-                self.msg["text"] = f"Rented cars by Mercedes: " + str(rentedMercedes)
-            elif (brand == "porsche"):
-                self.msg["text"] = "Rented cars by Porsche: " + str(rentedPorsche)
-            elif (brand == "tesla"):
-                self.msg["text"] = "Rented cars by Tesla: " + str(rentedTesla)
-            elif (brand == "toyota"):
-                self.msg["text"] = "Rented cars by Toyota: " + str(rentedToyota)
-            elif (brand == "volkswagen"):
-                self.msg["text"] = "Rented cars by Volkswagen: " + str(rentedVolkswagen)
-            else:
-                self.msg["text"] = "The brand is misspelled or does not exist in the database."
+            if not car["vehicle.make"].lower() in rented_cars:
+                rented_cars[car["vehicle.make"].lower()] = 0
+
+            rented_cars[car["vehicle.make"].lower()] += 1
+
+        if brand in rented_cars:
+            self.msg["text"] = "Rented cars by " + brand.capitalize() + ": " + str(rented_cars[brand])
+        else:
+            self.msg["text"] = "The brand is misspelled or does not exist in the database."
 root=Tk()
 Application(root)
 root.mainloop()
-
-
-
-
-
-
-
-
-
