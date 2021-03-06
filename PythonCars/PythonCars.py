@@ -13,20 +13,23 @@ class Application:
 
         self.firstContainer = Frame(master)
         self.firstContainer["pady"] = 10
+        self.firstContainer["background"] = "pink"
         self.firstContainer.pack()
 
-        self.title = Label(self.firstContainer, text="Car Rental Data Identifier")
+        self.title = Label(self.firstContainer, text="🚗 Car Rental Data Identifier 🚗", bg="pink")
         self.title["font"] = ("Arial", 10, "bold")
         self.title.pack()
 
         self.secondContainer = Frame(master)
         self.secondContainer["pady"] = 10
+        self.secondContainer["background"] = "pink"
         self.secondContainer.pack()
         self.thirdContainer = Frame(master)
         self.thirdContainer["pady"] = 10
+        self.thirdContainer["background"] = "pink"
         self.thirdContainer.pack()
 
-        self.desc = Label(self.secondContainer, text="Enter the brand to return the number of vehicles rented by it.")
+        self.desc = Label(self.secondContainer, text="Enter the brand to return the number of vehicles rented by it.", bg="pink")
         self.desc["font"] = ("Arial", 8, "italic")
         self.desc.pack()
 
@@ -35,9 +38,10 @@ class Application:
 
         self.brandContainer = Frame(master)
         self.brandContainer["padx"] = 20
+        self.brandContainer["background"] = "pink"
         self.brandContainer.pack()
 
-        self.brandLabel = Label(self.brandContainer, text="Brand name:", font=self.defaultFont)
+        self.brandLabel = Label(self.brandContainer, text="Brand name:", font=self.defaultFont, bg="pink")
         self.brandLabel.pack(side=LEFT)
 
         self.brandName = Entry(self.brandContainer)
@@ -47,15 +51,17 @@ class Application:
 
         self.fourthContainer = Frame(master)
         self.fourthContainer["pady"] = 20
+        self.fourthContainer["background"] = "pink"
         self.fourthContainer.pack()
 
         self.firstWidget = Frame(master)
+        self.firstWidget["background"] = "pink"
         self.firstWidget.pack()
 
         self.verify = Button(self.firstWidget, font=self.defaultFont, text="Done", bg="green", command=self.brandShow)
         self.verify.pack(side=LEFT)
 
-        self.msg = Label(self.fourthContainer, text=" ", font=self.defaultFont)
+        self.msg = Label(self.fourthContainer, text=" ", font=self.defaultFont, bg="pink")
         self.msg.pack()
 
         self.quit = Button(self.firstWidget, font=self.defaultFont, text="Quit", bg="red", command=root.quit)
@@ -66,6 +72,7 @@ class Application:
         webbrowser.open(url, new=new)
 
     def brandShow(self):
+
 
         async def loadArchive(archive):
             return  open(archive, newline="")
@@ -90,9 +97,14 @@ class Application:
             rented_cars[car["vehicle.make"].lower()] += 1
 
         if brand in rented_cars:
+            self.msg["background"] = "pink"
             self.msg["text"] = "Rented cars by " + brand.capitalize() + ": " + str(rented_cars[brand])
         else:
+            self.msg["background"] = "pink"
             self.msg["text"] = "The brand is misspelled or does not exist in the database."
 root=Tk()
 Application(root)
+root.title("Car Rental Data")
+root.configure(background="pink")
 root.mainloop()
+
