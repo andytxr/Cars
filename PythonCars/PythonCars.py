@@ -1,6 +1,7 @@
 import csv
 import webbrowser
 import asyncio
+import matplotlib.pyplot as plt
 from tkinter import *
 
 loop = asyncio.get_event_loop()
@@ -34,7 +35,10 @@ class Application:
         self.desc.pack()
 
         self.brandsButton = Button(self.thirdContainer, text="Brands available", font=self.defaultFont, bg="purple", command=self.brandsAvailable)
-        self.brandsButton.pack()
+        self.brandsButton.pack(side=LEFT)
+
+        self.fuelGraph = Button(self.thirdContainer, text="Eletrical cars graph", font=self.defaultFont, bg="blue", command=self.fuelGraph)
+        self.fuelGraph.pack(side=RIGHT)
 
         self.brandContainer = Frame(master)
         self.brandContainer["padx"] = 20
@@ -67,12 +71,51 @@ class Application:
         self.quit = Button(self.firstWidget, font=self.defaultFont, text="Quit", bg="red", command=root.quit)
         self.quit.pack(side=RIGHT)
 
+    def fuelGraph(self):
+
+        async def getData():
+            with open('CarRentalData.csv') as f:
+                return [dataCar for dataCar in csv.DictReader(f)]
+
+        async def countEletricCar(datas):
+
+            counter = {}
+
+            for car in datas:
+                if car['fuelType'] == 'ELECTRIC':
+                    year = car['vehicle.year']
+
+                    qtd = counter.get(year, 0) + 1
+
+                    counter.update({year: qtd})
+
+            return counter
+
+        async def getDataList(dataList, pos):
+            values = []
+            for value in dataList:
+                values.append(value[pos])
+
+            return values
+
+
+        dataCar = loop.run_until_complete(getData())
+        eletricCar = loop.run_until_complete(countEletricCar(dataCar))
+        orgCars = sorted(eletricCar.items())
+
+        years = loop.run_until_complete(getDataList(orgCars, 0))
+        qtds = loop.run_until_complete(getDataList(orgCars, 1))
+
+        plt.xlabel('Years')
+        plt.ylabel('Eletric Vehicle Quantity')
+        plt.plot(years, qtds)
+        plt.savefig('eletricCarsGraph.png')
+
     def brandsAvailable(self):
         url=r"BrandsAvailable.html"
         webbrowser.open(url, new=new)
 
     def brandShow(self):
-
 
         async def loadArchive(archive):
             return  open(archive, newline="")
