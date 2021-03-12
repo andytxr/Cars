@@ -3,9 +3,11 @@ import webbrowser
 import asyncio
 import matplotlib.pyplot as plt
 from tkinter import *
+import tkinter as tk
 
 loop = asyncio.get_event_loop()
 new = 2
+
 class Application:
 
     def __init__(self, master=None):
@@ -98,7 +100,6 @@ class Application:
 
             return values
 
-
         dataCar = loop.run_until_complete(getData())
         eletricCar = loop.run_until_complete(countEletricCar(dataCar))
         orgCars = sorted(eletricCar.items())
@@ -131,7 +132,7 @@ class Application:
         rented_cars = {}
 
         for car in data:
-            brand = self.brandName.get()
+            brand = self.brandName.get().lower()
             car = dict(car)
 
             if not car["vehicle.make"].lower() in rented_cars:
@@ -145,9 +146,11 @@ class Application:
         else:
             self.msg["background"] = "pink"
             self.msg["text"] = "The brand is misspelled or does not exist in the database."
-root=Tk()
+
+root=tk.Tk()
 Application(root)
 root.title("Car Rental Data")
 root.configure(background="pink")
+root.iconphoto(False, tk.PhotoImage(file="icon.png"))
 root.mainloop()
 
